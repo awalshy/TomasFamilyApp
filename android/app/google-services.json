@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "423430644051",
+    "firebase_url": "https://tomas-a5b57.firebaseio.com",
+    "project_id": "tomas-a5b57",
+    "storage_bucket": "tomas-a5b57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423430644051:android:d5dd4b517ff5386f2641a6",
+        "android_client_info": {
+          "package_name": "com.tomas.androidFamily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423430644051-m2eulj5gptit0r8i170c8hivv911tvva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXMz7j58yLARg6peeJCAA27XWwRl9Rvxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423430644051-m2eulj5gptit0r8i170c8hivv911tvva.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "423430644051-soktkcvr1ri5cr8480j7mq5bccb7muc0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tomas-eip.tomas"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423430644051:android:026c3810a57d96802641a6",
+        "android_client_info": {
+          "package_name": "com.tomas.tomas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423430644051-m2eulj5gptit0r8i170c8hivv911tvva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXMz7j58yLARg6peeJCAA27XWwRl9Rvxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423430644051-m2eulj5gptit0r8i170c8hivv911tvva.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "423430644051-soktkcvr1ri5cr8480j7mq5bccb7muc0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tomas-eip.tomas"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
