@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Row(
           children: <Widget>[
             Container(
-              child: Image.asset('assets/images/TomasLogoDark.png'),
+              child: Image.asset('assets/images/TomasLogoDark.png', width: 150,),
             )
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,
