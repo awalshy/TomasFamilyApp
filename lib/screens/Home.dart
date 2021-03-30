@@ -63,7 +63,9 @@ class _HomeState extends State<Home> {
         ],
       ),
       ),
-      Row(
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
         children: [
           Card(
             color: Color(0xff133c6d),
@@ -102,6 +104,7 @@ class _HomeState extends State<Home> {
             ),
           )
         ],
+      ),
       ),
       Container(
         margin: const EdgeInsets.all(20),

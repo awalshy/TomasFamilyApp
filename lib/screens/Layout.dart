@@ -5,15 +5,15 @@ import 'package:tomasfamilyapp/screens/Messages.dart';
 import 'package:tomasfamilyapp/screens/Phone.dart';
 import 'package:tomasfamilyapp/screens/Profile.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class Layout extends StatefulWidget {
+  Layout({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LayoutState createState() => _LayoutState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LayoutState extends State<Layout> {
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
