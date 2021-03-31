@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+// Screens
 import 'package:tomasfamilyapp/screens/Gallery.dart';
 import 'package:tomasfamilyapp/screens/Home.dart';
 import 'package:tomasfamilyapp/screens/Messages.dart';
@@ -37,7 +39,10 @@ class _LayoutState extends State<Layout> {
         title: Row(
           children: <Widget>[
             Container(
-              child: Image.asset('assets/images/TomasLogoDark.png', width: 150,),
+              child: SvgPicture.asset(
+                'assets/images/LogoColorDark.svg',
+                width: 150,
+              ),
             )
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,

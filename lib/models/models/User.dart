@@ -7,6 +7,7 @@ class UserModel {
   String lastName;
   String firstName;
   String imageProfil;
+  String family;
 
   UserModel(
       {@required this.uid,
@@ -20,6 +21,7 @@ class UserModel {
     lastName = map[UserConstant.columnLastName];
     firstName = map[UserConstant.columnFirstName];
     imageProfil = map[UserConstant.columnImageProfil];
+    family = map[UserConstant.columnFamily];
   }
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,7 @@ class UserModel {
       UserConstant.columnLastName: lastName,
       UserConstant.columnFirstName: firstName,
       UserConstant.columnImageProfil: imageProfil,
+      UserConstant.columnFamily: family
     };
     return map;
   }

@@ -1,25 +1,24 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:tomasfamilyapp/screens/Layout.dart';
-import 'package:tomasfamilyapp/screens/Register.dart';
+import 'package:tomasfamilyapp/screens/Unboarding.dart';
 
-class SignIn extends StatefulWidget {
-  SignIn({Key key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  SignUp({Key key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final String animationPath = 'assets/tomas_logo.riv';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _familyCodeController = TextEditingController();
   Artboard _artboard;
   double _size = 0;
   bool _keyboardOpen = false;
@@ -48,24 +47,26 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-  void signIn() async {
+  void signUp() async {
     UserCredential user;
     try {
-      user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+      user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text
+      );
     } on FirebaseAuthException catch (e) {
       var snack;
-      if (e.code == 'user-not-found')
+      if (e.code == 'weak-password')
         snack = SnackBar(
-          content: Text('Aucun compte trouvé avec cette adresse'),
+          content: Text('Le mot de passe est trop faible'),
         );
-      if (e.code == 'wrong-password')
-        snack = SnackBar(content: Text('Mauvais Mot De Passe'));
+      if (e.code == 'email-already-in-use')
+        snack = SnackBar(content: Text('Un compte existe déjà avec cet email'));
       if (snack != null) ScaffoldMessenger.of(context).showSnackBar(snack);
     }
     if (user != null) {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext contect) => Layout()));
+          MaterialPageRoute(builder: (BuildContext contect) => Unboarding()));
     }
   }
 
@@ -94,7 +95,7 @@ class _SignInState extends State<SignIn> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, bottom: 30),
                 child: Text(
-                  'Se Connecter',
+                  'Créer un compte',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 26,
@@ -155,38 +156,12 @@ class _SignInState extends State<SignIn> {
                           ),
                           Padding(
                               padding: const EdgeInsets.only(top: 30),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  OutlineButton(
+                              child: ElevatedButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  SignUp()));
+                                      signUp();
                                     },
                                     child: Text(
-                                      'Créer un compte',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        side: BorderSide(color: Colors.white)),
-                                    borderSide: BorderSide(color: Colors.white),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 20),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      signIn();
-                                    },
-                                    child: Text(
-                                      'Se Connecter',
+                                      'Créer le compte',
                                       style: TextStyle(
                                         color: Color(0xff133c6d),
                                         fontSize: 18,
@@ -206,9 +181,7 @@ class _SignInState extends State<SignIn> {
                                               side: BorderSide(
                                                   color: Colors.white))),
                                     ),
-                                  ),
-                                ],
-                              ))
+                                  ),)
                         ],
                       ),
                     )))

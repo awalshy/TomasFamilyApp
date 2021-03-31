@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 // Screens
 import 'package:tomasfamilyapp/screens/Layout.dart';
@@ -37,9 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final widget = await profile.isLogged() ? Layout() : SignIn();
 
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) =>  widget));
+        context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 
   @override
@@ -59,8 +58,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(
-                        'assets/images/TomasLogoLight.png',
+                      SvgPicture.asset(
+                        'assets/images/LogoLight.svg',
                         height: 400,
                         width: 400,
                       ),

@@ -1,5 +1,5 @@
 const String APP_NAME = 'TOMAS FAMILY APP';
-const bool CRASHLYTICS_TEST_MODE = false;
+const bool CRASHLYTICS_TEST_MODE = true;
 
 // Routes
 const String Home = '/';
@@ -15,4 +15,5 @@ class UserConstant {
   static final String columnLastName = 'lastName';
   static final String columnFirstName = 'firstName';
   static final String columnImageProfil = 'imageProfil';
+  static final String columnFamily = 'family';
 }
