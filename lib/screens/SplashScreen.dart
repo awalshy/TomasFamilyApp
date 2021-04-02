@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:tomasfamilyapp/screens/HomePage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+// Screens
+import 'package:tomasfamilyapp/screens/Layout.dart';
+import 'package:tomasfamilyapp/screens/SignIn.dart';
+// Providers
+import 'package:tomasfamilyapp/providers/ProfileProvider.dart';
 
 class SplashScreen extends StatefulWidget {
   final Color backgroundColor = Color.fromRGBO(19, 60, 109, 255);
@@ -13,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String _versionName = 'V0.0.1';
-  final splashDelay = 5;
+  final splashDelay = 3;
 
   @override
   void initState() {
@@ -27,11 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(_duration, navigationPage);
   }
 
-  void navigationPage() {
+  void navigationPage() async {
+    final profile = Provider.of<ProfileProvider>(context, listen: false);
+    final widget = await profile.isLogged() ? Layout() : SignIn();
+
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => MyHomePage(title: 'Tomas')));
+        context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 
   @override
@@ -51,8 +58,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(
-                        'assets/images/TomasLogoLight.png',
+                      SvgPicture.asset(
+                        'assets/images/LogoLight.svg',
                         height: 400,
                         width: 400,
                       ),
@@ -66,7 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Column(
                     children: <Widget>[
                       CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                       Container(
                         height: 10,
@@ -75,13 +83,15 @@ class _SplashScreenState extends State<SplashScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             Spacer(),
-                            Text(_versionName,
-                            style: TextStyle(color: Colors.white),),
+                            Text(
+                              _versionName,
+                              style: TextStyle(color: Colors.white),
+                            ),
                             Spacer(
                               flex: 4,
                             ),
                             Text('Loading...',
-                            style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.white)),
                             Spacer(),
                           ])
                     ],
