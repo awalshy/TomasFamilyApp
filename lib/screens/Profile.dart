@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tomasfamilyapp/models/models/User.dart';
+import 'package:tomasfamilyapp/providers/ProfileProvider.dart';
 import 'package:tomasfamilyapp/screens/SignIn.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key key}) : super(key: key);
@@ -10,32 +14,310 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  UserModel _user;
+  String _email;
+  bool _edit = false;
+
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _edit = false;
+    setState(() {
+      _edit = false;
+    });
+    _loadUser();
+  }
+
+  void _loadUser() async {
+    print('LOADING USER');
+    final profile = Provider.of<ProfileProvider>(context, listen: false);
+    final auth = FirebaseAuth.instance;
+    setState(() {
+      _user = profile.user;
+      _email = auth.currentUser.email;
+    });
+  }
+
+  void _save() {
+    setState(() {
+      _edit = !_edit;
+    });
+  }
+
   void signOut() {
     FirebaseAuth.instance.signOut().then((value) => Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (BuildContext contect) => SignIn())));
   }
 
-  void crash() {
-    FirebaseCrashlytics.instance.crash();
-  }
-
   @override
   Widget build(BuildContext contect) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        ElevatedButton(
-            onPressed: () {
-              signOut();
-            },
-            child: Text('Se Deconnecter')),
-        ElevatedButton(
-            onPressed: () {
-              crash();
-            },
-            child: Text('Make it crash'))
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Profile',
+                          style: TextStyle(
+                              color: Color(0xFF133C6D), fontSize: 36)),
+                      _user != null && _user.family != null && _user.family.isNotEmpty
+                          ? Text(
+                              'Famille: ' + _user.family,
+                              style: TextStyle(color: Color(0xff133c6d)),
+                            )
+                          : Row(
+                              children: [
+                                Text('Famille: ',
+                                    style: TextStyle(color: Color(0xff133c6d))),
+                                SkeletonAnimation(
+                                  shimmerColor: Color(0xff133c6d),
+                                  borderRadius: BorderRadius.circular(20),
+                                  shimmerDuration: 1000,
+                                  child: Container(
+                                    height: 8,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.grey[200]),
+                                  ),
+                                )
+                              ],
+                            )
+                      // Image.network(_user.imageProfil)
+                    ],
+                  ),
+                  SvgPicture.asset(
+                    'assets/images/profile.svg',
+                    width: MediaQuery.of(context).size.width * 0.4,
+                  )
+                ],
+              ),
+            ),
+            Divider(
+              height: 20,
+              thickness: 1.5,
+              color: Color(0xff133c6d),
+            ),
+            _edit
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    child: Theme(
+                        data: new ThemeData(primaryColor: Color(0xff133c6d)),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: TextFormField(
+                                controller: _firstNameController,
+                                decoration: const InputDecoration(
+                                    hintText: 'Prénom',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff133c6d))),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff133c6d))),
+                                    hintStyle:
+                                        TextStyle(color: Color(0xff133c6d))),
+                                style: TextStyle(color: Color(0xff133c6d)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: TextFormField(
+                                controller: _lastNameController,
+                                decoration: const InputDecoration(
+                                    hintText: 'Nom de Famille',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff133c6d))),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff133c6d))),
+                                    hintStyle:
+                                        TextStyle(color: Color(0xff133c6d))),
+                                style: TextStyle(color: Color(0xff133c6d)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: TextFormField(
+                                controller: _emailController,
+                                decoration: const InputDecoration(
+                                    hintText: 'Email',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff133c6d))),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff133c6d))),
+                                    hintStyle:
+                                        TextStyle(color: Color(0xff133c6d))),
+                                style: TextStyle(color: Color(0xff133c6d)),
+                              ),
+                            ),
+                          ],
+                        )))
+                : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _user != null
+                            ? Text(_user.firstName + ' ' + _user.lastName,
+                                style: TextStyle(
+                                    color: Color(0xff133c6d), fontSize: 28))
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: SkeletonAnimation(
+                                  shimmerColor: Color(0xff133c6d),
+                                  borderRadius: BorderRadius.circular(20),
+                                  shimmerDuration: 1000,
+                                  child: Container(
+                                    height: 14,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.grey[200]),
+                                  ),
+                                ),
+                              ),
+                        _email != null
+                            ? Text(_email,
+                                style: TextStyle(
+                                    color: Color(0xff133c6d), fontSize: 12))
+                            : SkeletonAnimation(
+                                shimmerColor: Color(0xff133c6d),
+                                borderRadius: BorderRadius.circular(20),
+                                shimmerDuration: 1000,
+                                child: Container(
+                                  height: 10,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.grey[200]),
+                                ),
+                              ),
+                      ],
+                    )),
+            _edit
+                ? Container()
+                : Divider(
+                    height: 20,
+                    thickness: 1.5,
+                    color: Color(0xff133c6d),
+                  ),
+            _edit
+                ? Row()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Notifications',
+                        style:
+                            TextStyle(color: Color(0xff133c6d), fontSize: 16),
+                      ),
+                      Switch(
+                          value: false,
+                          onChanged: (bool value) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Not implemented')));
+                          })
+                    ],
+                  ),
+            _edit
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          _save();
+                        },
+                        child: Text(
+                          'Sauvegarder',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 12)),
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xff133c6d)),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                      )
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _edit = !_edit;
+                          });
+                        },
+                        child: Text('Editer le profile'),
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 12)),
+                            backgroundColor:
+                                MaterialStateProperty.all(Color(0xff133c6d)),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            signOut();
+                          },
+                          child: Text('Se Deconnecter'),
+                          style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 12)),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xff9e2020)),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10))))),
+                    ],
+                  )
+          ],
+        ));
   }
 }

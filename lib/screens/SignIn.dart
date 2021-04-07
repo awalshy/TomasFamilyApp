@@ -1,9 +1,12 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tomasfamilyapp/providers/ProfileProvider.dart';
 
 import 'package:tomasfamilyapp/screens/Layout.dart';
 import 'package:tomasfamilyapp/screens/Register.dart';
@@ -22,15 +25,18 @@ class _SignInState extends State<SignIn> {
   TextEditingController _passwordController = TextEditingController();
   Artboard _artboard;
   double _size = 0;
+  bool _loading = false;
   bool _keyboardOpen = false;
 
   @override
   void initState() {
     super.initState();
     _loadRive();
+    _loading = false;
     final keyboadController = KeyboardVisibilityController();
     keyboadController.onChange.listen((bool visible) {
       setState(() {
+        _loading = false;
         _keyboardOpen = visible;
         _size = MediaQuery.of(context).size.width * (_keyboardOpen ? 0.4 : 0.8);
       });
@@ -50,9 +56,28 @@ class _SignInState extends State<SignIn> {
 
   void signIn() async {
     UserCredential user;
+    setState(() {
+      _loading = true;
+    });
     try {
       user = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
+      if (user != null) {
+        final profile = Provider.of<ProfileProvider>(context, listen: false);
+        DocumentSnapshot fireUser = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.user.uid)
+            .get();
+        dynamic familyRef = fireUser.get('family');
+        DocumentSnapshot familySnap = await familyRef.get();
+        profile.login(fireUser.get('firstName'),
+            fireUser.get('lastName'), familySnap.get('name') as String, user.user.uid);
+        setState(() {
+          _loading = false;
+        });
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext contect) => Layout()));
+      }
     } on FirebaseAuthException catch (e) {
       var snack;
       if (e.code == 'user-not-found')
@@ -62,10 +87,9 @@ class _SignInState extends State<SignIn> {
       if (e.code == 'wrong-password')
         snack = SnackBar(content: Text('Mauvais Mot De Passe'));
       if (snack != null) ScaffoldMessenger.of(context).showSnackBar(snack);
-    }
-    if (user != null) {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext contect) => Layout()));
+      setState(() {
+        _loading = false;
+      });
     }
   }
 
@@ -155,60 +179,68 @@ class _SignInState extends State<SignIn> {
                           ),
                           Padding(
                               padding: const EdgeInsets.only(top: 30),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  OutlineButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  SignUp()));
-                                    },
-                                    child: Text(
-                                      'Créer un compte',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        side: BorderSide(color: Colors.white)),
-                                    borderSide: BorderSide(color: Colors.white),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 20),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      signIn();
-                                    },
-                                    child: Text(
-                                      'Se Connecter',
-                                      style: TextStyle(
-                                        color: Color(0xff133c6d),
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 20)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.white),
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
+                              child: _loading
+                                  ? CircularProgressIndicator()
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        OutlineButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        SignUp()));
+                                          },
+                                          child: Text(
+                                            'Créer un compte',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               side: BorderSide(
-                                                  color: Colors.white))),
-                                    ),
-                                  ),
-                                ],
-                              ))
+                                                  color: Colors.white)),
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12, horizontal: 20),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            signIn();
+                                          },
+                                          child: Text(
+                                            'Se Connecter',
+                                            style: TextStyle(
+                                              color: Color(0xff133c6d),
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all(
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 12,
+                                                    horizontal: 20)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.white),
+                                            shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: Colors.white))),
+                                          ),
+                                        ),
+                                      ],
+                                    ))
                         ],
                       ),
                     )))
