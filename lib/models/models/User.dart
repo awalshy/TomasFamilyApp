@@ -13,7 +13,8 @@ class UserModel {
       {@required this.uid,
       @required this.lastName,
       @required this.firstName,
-      this.imageProfil});
+      this.imageProfil,
+      this.family});
   UserModel.empty();
 
   UserModel.fromMap(Map<String, dynamic> map) {

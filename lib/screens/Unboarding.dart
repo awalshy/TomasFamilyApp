@@ -28,7 +28,6 @@ class _UnboardingState extends State<Unboarding> {
           _lastNameController.text,
           _familyController.text,
           _auth.currentUser.uid);
-      print('RES=' + res);
       if (res != 'error') {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Sauvegardé avec succès !')));

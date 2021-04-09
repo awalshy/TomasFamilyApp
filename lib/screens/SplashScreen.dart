@@ -60,8 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     children: <Widget>[
                       SvgPicture.asset(
                         'assets/images/LogoLight.svg',
-                        height: 400,
-                        width: 400,
+                        width: MediaQuery.of(context).size.width * 0.6,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tomasfamilyapp/helpers/sharedPreferences.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
@@ -58,32 +59,18 @@ class ProfileProvider extends ChangeNotifier {
       return true;
   }
 
-  Future<bool> login() async {
+  Future<bool> login(
+      String firstName, String lastName, String familyCode, String uid) async {
     try {
-      final uid =
-          await _sharedPreferenceHelper.getString(UserConstant.columnUid);
-      final firstName =
-          await _sharedPreferenceHelper.getString(UserConstant.columnFirstName);
-      final lastName =
-          await _sharedPreferenceHelper.getString(UserConstant.columnLastName);
-      final imageProfil = await _sharedPreferenceHelper
-          .getString(UserConstant.columnImageProfil);
-
       _user = UserModel(
           uid: uid,
+          family: familyCode,
           lastName: lastName,
-          firstName: firstName,
-          imageProfil: imageProfil);
+          firstName: firstName);
       return true;
     } catch (e) {
       return false;
     }
-  }
-
-  Future<bool> register(String uid) async {
-    await _sharedPreferenceHelper.setString(UserConstant.columnUid, uid);
-    final res = this.login();
-    return res;
   }
 
   Future<String> createAndSave(
@@ -120,5 +107,23 @@ class ProfileProvider extends ChangeNotifier {
       return 'error';
     }
     return 'created';
+  }
+
+  Future<bool> update(String firstName, String lastName, String email) async {
+    String uid = _user.uid;
+    try {
+      DocumentReference userRef = _firestore.collection('users').doc(uid);
+      await userRef.update({
+        'firstName': firstName,
+        'lastName': lastName,
+      });
+      final fireAuth = FirebaseAuth.instanceFor(app: _firestore.app);
+      fireAuth.currentUser.updateEmail(email);
+      _user.firstName = firstName;
+      _user.lastName = lastName;
+    } on FirebaseException catch (e) {
+      return false;
+    }
+    return true;
   }
 }
