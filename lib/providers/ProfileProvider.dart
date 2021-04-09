@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tomasfamilyapp/helpers/sharedPreferences.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
@@ -59,13 +60,8 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<bool> login(
-    String firstName,
-    String lastName,
-    String familyCode,
-    String uid
-  ) async {
+      String firstName, String lastName, String familyCode, String uid) async {
     try {
-
       _user = UserModel(
           uid: uid,
           family: familyCode,
@@ -111,5 +107,23 @@ class ProfileProvider extends ChangeNotifier {
       return 'error';
     }
     return 'created';
+  }
+
+  Future<bool> update(String firstName, String lastName, String email) async {
+    String uid = _user.uid;
+    try {
+      DocumentReference userRef = _firestore.collection('users').doc(uid);
+      await userRef.update({
+        'firstName': firstName,
+        'lastName': lastName,
+      });
+      final fireAuth = FirebaseAuth.instanceFor(app: _firestore.app);
+      fireAuth.currentUser.updateEmail(email);
+      _user.firstName = firstName;
+      _user.lastName = lastName;
+    } on FirebaseException catch (e) {
+      return false;
+    }
+    return true;
   }
 }

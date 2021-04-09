@@ -33,7 +33,6 @@ class _ProfileState extends State<Profile> {
   }
 
   void _loadUser() async {
-    print('LOADING USER');
     final profile = Provider.of<ProfileProvider>(context, listen: false);
     final auth = FirebaseAuth.instance;
     setState(() {
@@ -43,6 +42,13 @@ class _ProfileState extends State<Profile> {
   }
 
   void _save() {
+    final profile = Provider.of<ProfileProvider>(context, listen: false);
+    profile.update(_firstNameController.text, _lastNameController.text,
+        _emailController.text);
+    var user = _user;
+    user.lastName = _lastNameController.text;
+    user.firstName = _firstNameController.text;
+    _email = _emailController.text;
     setState(() {
       _edit = !_edit;
     });
@@ -55,14 +61,14 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
-  Widget build(BuildContext contect) {
+  Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40),
+              padding: EdgeInsets.symmetric(vertical: _edit ? 15 : 40),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,10 +77,13 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Profile',
+                      Text(_edit ? 'Editer' : 'Profile',
                           style: TextStyle(
-                              color: Color(0xFF133C6D), fontSize: 36)),
-                      _user != null && _user.family != null && _user.family.isNotEmpty
+                              color: Color(0xFF133C6D),
+                              fontSize: _edit ? 26 : 36)),
+                      _user != null &&
+                              _user.family != null &&
+                              _user.family.isNotEmpty
                           ? Text(
                               'Famille: ' + _user.family,
                               style: TextStyle(color: Color(0xff133c6d)),
@@ -103,13 +112,14 @@ class _ProfileState extends State<Profile> {
                   ),
                   SvgPicture.asset(
                     'assets/images/profile.svg',
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width *
+                        (_edit ? 0.15 : 0.4),
                   )
                 ],
               ),
             ),
             Divider(
-              height: 20,
+              height: _edit ? 10 : 20,
               thickness: 1.5,
               color: Color(0xff133c6d),
             ),
@@ -285,6 +295,9 @@ class _ProfileState extends State<Profile> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          _firstNameController.text = _user.firstName;
+                          _lastNameController.text = _user.lastName;
+                          _emailController.text = _email;
                           setState(() {
                             _edit = !_edit;
                           });
