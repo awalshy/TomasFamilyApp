@@ -1,21 +1,15 @@
-import 'package:meta/meta.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageModel {
-  final String documentId;
-  final String idFrom;
-  final String idTo;
-  final String timestamp;
+  final DocumentReference sender;
+  final DocumentReference conversation;
   final String content;
-  final int type;
-  final bool readByPeer;
+  final DateTime createdAt;
 
   MessageModel({
-    this.documentId,
-    @required this.idFrom,
-    @required this.idTo,
-    @required this.timestamp,
-    @required this.content,
-    @required this.type,
-    @required this.readByPeer
+    this.content,
+    this.conversation,
+    this.sender,
+    this.createdAt
   });
 }

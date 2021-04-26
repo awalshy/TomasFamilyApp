@@ -1,6 +1,13 @@
 class ConversationModel {
-  final String destUid;
-  final bool readByPeer;
+  final List<dynamic> members;
+  final DateTime lastRead;
+  final String name;
+  final String id;
 
-  ConversationModel(this.destUid, this.readByPeer);
+  ConversationModel({
+    this.name,
+    this.lastRead,
+    this.members,
+    this.id
+});
 }
