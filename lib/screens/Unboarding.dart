@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tomasfamilyapp/providers/ProfileProvider.dart';
+import 'package:tomasfamilyapp/models/UserService.dart';
 import 'package:tomasfamilyapp/screens/Layout.dart';
 
 class Unboarding extends StatefulWidget {
@@ -21,14 +20,14 @@ class _UnboardingState extends State<Unboarding> {
   FirebaseAuth _auth;
 
   void saveUserInfos() async {
-    final profile = Provider.of<ProfileProvider>(context, listen: false);
     if (_formKey.currentState != null && _formKey.currentState.validate()) {
-      final res = await profile.createAndSave(
+      UserService _user = new UserService();
+      final res = await _user.create(
           _firstNameController.text,
           _lastNameController.text,
           _familyController.text,
           _auth.currentUser.uid);
-      if (res != 'error') {
+      if (res != null) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Sauvegardé avec succès !')));
         Navigator.pushReplacement(context,

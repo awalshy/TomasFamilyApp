@@ -10,7 +10,6 @@ class RouteGenerator {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     RouteGenerator route = RouteGenerator(settings.name);
-    final dynamic args = settings.arguments ?? {};
     switch (settings.name) {
       default:
         return route.normal(Layout());

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
+import 'package:tomasfamilyapp/redux/state.dart';
 // Screens
 import 'package:tomasfamilyapp/screens/Gallery.dart';
 import 'package:tomasfamilyapp/screens/Home.dart';
@@ -76,8 +80,14 @@ class _LayoutState extends State<Layout> {
               backgroundColor: const Color(0xFF133C6D))
         ],
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onTap: _onItemTapped
+      ),
+      endDrawer: new StoreConnector<AppState, DevToolsStore<AppState>>(
+          converter: (store) => store,
+        builder: (context, store) {
+            return ReduxDevTools<AppState>(store);
+        },
+      ),
     );
   }
 }

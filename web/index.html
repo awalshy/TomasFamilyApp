@@ -26,19 +26,36 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>tomasfamilyapp</title>
+  <title>TOMAS</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {
         navigator.serviceWorker.register('flutter_service_worker.js');
       });
     }
+    // Init Firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyDczmSoNNwjbvpyDrpPZMSdVZlUZNEYbx4",
+      authDomain: "tomas-a5b57.firebaseapp.com",
+      databaseURL: "https://tomas-a5b57.firebaseio.com",
+      projectId: "tomas-a5b57",
+      storageBucket: "tomas-a5b57.appspot.com",
+      messagingSenderId: "423430644051",
+      appId: "1:423430644051:web:b8b6dcbe58bfc0ee2641a6",
+      measurementId: "G-DHBQBRPQ72"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>

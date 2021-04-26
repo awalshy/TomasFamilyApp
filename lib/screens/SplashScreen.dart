@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:tomasfamilyapp/redux/actions.dart';
+import 'package:tomasfamilyapp/redux/state.dart';
 // Screens
 import 'package:tomasfamilyapp/screens/Layout.dart';
 import 'package:tomasfamilyapp/screens/SignIn.dart';
-// Providers
-import 'package:tomasfamilyapp/providers/ProfileProvider.dart';
 
 class SplashScreen extends StatefulWidget {
   final Color backgroundColor = Color.fromRGBO(19, 60, 109, 255);
@@ -34,10 +35,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigationPage() async {
-    final profile = Provider.of<ProfileProvider>(context, listen: false);
-    final widget = await profile.isLogged() ? Layout() : SignIn();
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    final widget = _auth.currentUser != null ? Layout() : SignIn();
 
-    Navigator.pushReplacement(
+    Navigator.push(
         context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 
