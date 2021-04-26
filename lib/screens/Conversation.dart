@@ -83,34 +83,38 @@ class _ConversationState extends State<Conversation> {
       body: !_loaded ? Center(child: CircularProgressIndicator(
         valueColor: new AlwaysStoppedAnimation<Color>(Color(0xff133c6d)),
       )) : SizedBox(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SingleChildScrollView(
-              physics: ScrollPhysics(),
-              child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final bool me = messages[index].sender == user;
-                    return Bubble(
-                      margin: BubbleEdges.only(top: 12),
-                      elevation: 6,
-                      padding: BubbleEdges.symmetric(vertical: 10, horizontal: 15),
-                      alignment: me ? Alignment.centerRight : Alignment.centerLeft,
-                      color: me ? Color(0xff133c6d) : Colors.white,
-                      child: Text(messages[index].content,
-                        textAlign: me ? TextAlign.right : TextAlign.left,
-                        style: TextStyle(color: me ? Colors.white : Colors.black),
-                      ),
-                      nip: me ? BubbleNip.rightBottom : BubbleNip.leftBottom,
-                    );
-                  }
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SingleChildScrollView(
+                physics: ScrollPhysics(),
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final bool me = messages[index].sender == user;
+                      return Bubble(
+                        margin: BubbleEdges.only(top: 12),
+                        elevation: 6,
+                        padding: BubbleEdges.symmetric(vertical: 10, horizontal: 15),
+                        alignment: me ? Alignment.centerRight : Alignment.centerLeft,
+                        color: me ? Color(0xff133c6d) : Colors.white,
+                        child: Text(messages[index].content,
+                          textAlign: me ? TextAlign.right : TextAlign.left,
+                          style: TextStyle(color: me ? Colors.white : Colors.black),
+                        ),
+                        nip: me ? BubbleNip.rightBottom : BubbleNip.leftBottom,
+                      );
+                    }
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        )
       ),
       bottomSheet: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
