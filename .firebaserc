@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "tomas-a5b57"
+  },
+  "targets": {
+    "tomas-a5b57": {
+      "hosting": {
+        "app": [
+          "tomas-family"
+        ]
+      }
+    }
+  }
+}

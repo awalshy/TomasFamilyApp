@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tomasfamilyapp/redux/actions.dart';
-import 'package:tomasfamilyapp/redux/state.dart';
 // Screens
 import 'package:tomasfamilyapp/screens/Layout.dart';
 import 'package:tomasfamilyapp/screens/SignIn.dart';

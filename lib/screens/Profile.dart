@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tomasfamilyapp/models/UserService.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
 import 'package:tomasfamilyapp/redux/actions.dart';
 import 'package:tomasfamilyapp/screens/SignIn.dart';
@@ -254,12 +255,12 @@ class _ProfileState extends State<Profile> {
                                   ElevatedButton(
                                     onPressed: () {
                                       UserModel updatedUser = user;
-                                      user.lastName = _lastNameController.text;
-                                      user.firstName =
+                                      UserService userServ = new UserService(user: user);
+                                      updatedUser.lastName = _lastNameController.text;
+                                      updatedUser.firstName =
                                           _firstNameController.text;
                                       save(updatedUser);
-                                      final auth = FirebaseAuth.instance;
-                                      auth.currentUser.updateEmail(_email);
+                                      userServ.update(updatedUser.firstName, updatedUser.lastName, _emailController.text);
                                       setState(() {
                                         _email = _emailController.text;
                                         _edit = false;

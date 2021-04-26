@@ -211,9 +211,6 @@ class _SignInState extends State<SignIn> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 12,
                                                         horizontal: 20)),
-                                                backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.white),
                                                 shape: MaterialStateProperty.all(
                                                     RoundedRectangleBorder(
                                                         borderRadius:

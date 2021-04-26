@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:tomasfamilyapp/redux/state.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -46,10 +48,15 @@ class _HomeState extends State<Home> {
           alignment: Alignment.bottomLeft,
           height: 200,
           padding: EdgeInsets.all(20),
-          child: Text('Bonjour Thomas !', style: TextStyle(
-          color: Color(0xFF133C6D),
-          fontSize: 36,
-        ), textAlign: TextAlign.center,),
+          child: StoreConnector<AppState, String>(
+            converter: (store) => store.state.user.firstName,
+            builder: (context, firstName) {
+              return Text('Bonjour ' + firstName + ' !', style: TextStyle(
+                color: Color(0xFF133C6D),
+                fontSize: 36,
+              ), textAlign: TextAlign.center);
+            },
+          )
         )
       ]),
       Container(

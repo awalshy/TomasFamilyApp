@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
 import 'package:tomasfamilyapp/models/models/Conversation.dart';
