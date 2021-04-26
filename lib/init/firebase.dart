@@ -7,6 +7,7 @@ import '../constants.dart';
 Future initFirebase() async {
   await Firebase.initializeApp();
 
+  if (kIsWeb) return;
   if (CRASHLYTICS_TEST_MODE) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   } else {
