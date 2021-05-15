@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:tomasfamilyapp/redux/actions.dart';
+import 'package:tomasfamilyapp/redux/state.dart';
 import 'package:tomasfamilyapp/screens/SignIn.dart';
 
 class Phone extends StatefulWidget {
@@ -19,6 +22,12 @@ class _PhoneState extends State<Phone> {
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignIn()));
         },
           child: Text('SignOut'),
+        ),
+        StoreConnector<AppState, Function()>(
+            converter: (store) => () => store.dispatch(LoadGallery()),
+          builder: (context, load) {
+              return ElevatedButton(onPressed: load, child: Text('Refresh Gallery'));
+          },
         )
       ],
     );

@@ -1,9 +1,13 @@
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
+import 'package:tomasfamilyapp/redux/actions.dart';
 import 'package:tomasfamilyapp/redux/state.dart';
+import 'dart:math' as math;
 // Screens
 import 'package:tomasfamilyapp/screens/Gallery.dart';
 import 'package:tomasfamilyapp/screens/Home.dart';
@@ -84,18 +88,58 @@ class _LayoutState extends State<Layout> {
             return ReduxDevTools<AppState>(store);
         },
       ),
-      floatingActionButton: _selectedIndex != 1 ? null : FloatingActionButton.extended(
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              elevation: 10,
-              enableDrag: true,
-              isScrollControlled: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              builder: (context) {
-                return Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
+      floatingActionButton: _selectedIndex == 1 ? ConvButton() : _selectedIndex == 3 ? GalleryButton() : null,
+    );
+  }
+}
+
+class GalleryButton extends StatelessWidget {
+  final picker = ImagePicker();
+  Future<void> getImage(Function(String) dispatch) async {
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if (pickedImage == null) return;
+    dispatch(pickedImage.path);
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, Function(String)>(
+        converter: (store) => (String path) {
+          store.dispatch(UploadingAction(true));
+          store.dispatch(UploadImage(path));
+        },
+      builder: (context, dispatch) {
+        return FloatingActionButton.extended(
+            onPressed: () {
+              getImage(dispatch);
+            },
+            backgroundColor: Color(0xff133c6d),
+            label: StoreConnector<AppState, bool>(
+              converter: (store) => store.state.uploading,
+              builder: (context, loading) => Text(loading ? 'En cours...' : 'Charger'),
+            ),
+            icon: Icon(Icons.upload_sharp)
+        );
+      },
+    );
+  }
+}
+
+class ConvButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        showModalBottomSheet(
+            context: context,
+            elevation: 10,
+            enableDrag: true,
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            builder: (context) {
+              return Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Padding(
@@ -104,8 +148,8 @@ class _LayoutState extends State<Layout> {
                       ),
                       TextField(
                         decoration: const InputDecoration(
-                          hintText: 'Nom de la conversation',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Color(0x133c6d)))
+                            hintText: 'Nom de la conversation',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Color(0x133c6d)))
                         ),
                       ),
                       ListTile(
@@ -121,27 +165,26 @@ class _LayoutState extends State<Layout> {
                         title: Text('Contact 3'),
                       ),
                       Padding(padding: const EdgeInsets.only(top: 30),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Center(child: Text('Créer'),),
-                          style: ButtonStyle(
-                              padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
-                              backgroundColor: MaterialStateProperty.all(const Color(0xff133c6d)),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
-                          ),
-                        )
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Center(child: Text('Créer'),),
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
+                                backgroundColor: MaterialStateProperty.all(const Color(0xff133c6d)),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+                            ),
+                          )
                       )
                     ],
                   )
-                );
-          });
-        },
-        label: Text('Nouvelle'),
-        icon: Icon(Icons.messenger_outlined),
-        backgroundColor: Color(0xff133c6d),
-      ),
+              );
+            });
+      },
+      label: Text('Nouvelle'),
+      icon: Icon(Icons.messenger_outlined),
+      backgroundColor: Color(0xff133c6d),
     );
   }
 }

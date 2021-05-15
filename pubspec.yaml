@@ -42,6 +42,7 @@ dependencies:
   firebase_crashlytics: ^1.0.0
   firebase_analytics: ^7.1.1
   firebase_auth: ^1.0.1
+  firebase_storage: 8.0.6
   cloud_firestore: ^1.0.3
   shared_preferences: ^2.0.5
   flutter_svg: ^0.19.3
@@ -52,6 +53,8 @@ dependencies:
   redux_dev_tools: ^0.7.0
   flutter_redux_dev_tools: ^0.5.1
   bubble: ^1.2.1
+  image_picker: ^0.7.5
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:

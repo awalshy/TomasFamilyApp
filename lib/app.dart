@@ -25,6 +25,7 @@ class App extends StatelessWidget {
     if (user != null) {
       store.dispatch(LoadUser(user.uid));
       store.dispatch(LoadConversations(user.uid));
+      store.dispatch(LoadGallery());
     }
     return StoreProvider<AppState>(store: store, child: MaterialApp(
       title: APP_NAME,
