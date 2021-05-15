@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:tomasfamilyapp/models/models/Conversation.dart';
+import 'package:tomasfamilyapp/models/models/Image.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
 
 // User Actions
@@ -38,4 +40,27 @@ class UpdateConversationAction {
   final List<ConversationModel> convs;
 
   UpdateConversationAction(this.convs);
+}
+
+// Gallery Actions
+class LoadGallery {
+  LoadGallery();
+}
+
+class UploadImage {
+  String path;
+
+  UploadImage(this.path);
+}
+
+class UpdateGallery {
+  List<ImageModel> imgs;
+
+  UpdateGallery(this.imgs);
+}
+
+class AddImage {
+  ImageModel img;
+
+  AddImage(this.img);
 }
