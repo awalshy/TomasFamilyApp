@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,7 +20,7 @@ class Layout extends StatefulWidget {
 }
 
 class _LayoutState extends State<Layout> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -32,7 +31,7 @@ class _LayoutState extends State<Layout> {
   final widgets = [
     new Profile(),
     new Message(),
-    new Home(),
+    // new Home(),
     new Phone(),
     new Gallery()
   ];
@@ -63,10 +62,10 @@ class _LayoutState extends State<Layout> {
               icon: Icon(Icons.messenger),
               label: 'Messagerie',
               backgroundColor: const Color(0xFF133C6D)),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Accueil',
-              backgroundColor: const Color(0xFF133C6D)),
+          // BottomNavigationBarItem(
+          //     icon: Icon(Icons.home),
+          //     label: 'Accueil',
+          //     backgroundColor: const Color(0xFF133C6D)),
           BottomNavigationBarItem(
               icon: Icon(Icons.phone),
               label: 'Appels',

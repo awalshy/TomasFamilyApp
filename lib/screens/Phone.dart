@@ -14,7 +14,7 @@ class _PhoneState extends State<Phone> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        RaisedButton(onPressed: () {
+        ElevatedButton(onPressed: () {
           FirebaseAuth.instance.signOut();
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignIn()));
         },

@@ -2,7 +2,6 @@ import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tomasfamilyapp/models/MessagesService.dart';
 import 'package:tomasfamilyapp/models/models/Conversation.dart';
 import 'package:tomasfamilyapp/models/models/Message.dart';
@@ -83,7 +82,7 @@ class _ConversationState extends State<Conversation> {
       body: !_loaded ? Center(child: CircularProgressIndicator(
         valueColor: new AlwaysStoppedAnimation<Color>(Color(0xff133c6d)),
       )) : SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.9,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(

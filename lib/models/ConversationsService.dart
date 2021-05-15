@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tomasfamilyapp/models/models/Conversation.dart';
-import 'package:tomasfamilyapp/models/models/Message.dart';
 
 class ConversationsService {
   List<ConversationModel> _convs;
@@ -27,7 +26,7 @@ class ConversationsService {
           .get();
       if (conv.size > 0) return null;
       // if not create a conversation
-      DocumentReference conversation = await _firestore
+      await _firestore
           .collection('conversations')
           .add({'members': members, 'lastRead': DateTime.now(), 'name': name});
       ConversationModel _conv = new ConversationModel(
