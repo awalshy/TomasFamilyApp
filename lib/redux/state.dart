@@ -6,8 +6,9 @@ class AppState {
   final UserModel user;
   final List<ConversationModel> convs;
   final List<ImageModel> imgs;
+  final bool uploading;
 
-  AppState(this.user, this.convs, this.imgs);
+  AppState(this.user, this.convs, this.imgs, this.uploading);
 
-  factory AppState.initial() => AppState(null, List.unmodifiable([]), List.unmodifiable([]));
+  factory AppState.initial() => AppState(null, List.unmodifiable([]), List.unmodifiable([]), false);
 }

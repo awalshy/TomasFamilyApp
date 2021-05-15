@@ -104,14 +104,20 @@ class GalleryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Function(String)>(
-        converter: (store) => (String path) => store.dispatch(UploadImage(path)),
+        converter: (store) => (String path) {
+          store.dispatch(UploadingAction(true));
+          store.dispatch(UploadImage(path));
+        },
       builder: (context, dispatch) {
         return FloatingActionButton.extended(
             onPressed: () {
               getImage(dispatch);
             },
             backgroundColor: Color(0xff133c6d),
-            label: Text('Charger'),
+            label: StoreConnector<AppState, bool>(
+              converter: (store) => store.state.uploading,
+              builder: (context, loading) => Text(loading ? 'En cours...' : 'Charger'),
+            ),
             icon: Icon(Icons.upload_sharp)
         );
       },

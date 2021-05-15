@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:tomasfamilyapp/redux/actions.dart';
 import 'package:tomasfamilyapp/redux/state.dart';
 import 'package:redux/redux.dart';
@@ -7,8 +9,10 @@ void uploadImageMiddleware(Store<AppState> store, dynamic action, NextDispatcher
   if (action is UploadImage) {
     if (store.state.user != null) {
       final service = GalleryService(familyId: store.state.user.family);
-      service.uploadImage(action.path);
-      store.dispatch(LoadGallery());
+      service.uploadImage(action.path, () {
+        store.dispatch(UploadingAction(false));
+        store.dispatch(LoadGallery());
+      });
     }
   }
   next(action);

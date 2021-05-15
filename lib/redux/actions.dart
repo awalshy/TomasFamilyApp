@@ -53,6 +53,12 @@ class UploadImage {
   UploadImage(this.path);
 }
 
+class UploadingAction {
+  bool uploading;
+
+  UploadingAction(this.uploading);
+}
+
 class UpdateGallery {
   List<ImageModel> imgs;
 

@@ -8,7 +8,8 @@ import 'package:tomasfamilyapp/redux/state.dart';
 AppState appReducer(AppState state, action) => AppState(
     userReducer(state.user, action),
     conversationReducer(state.convs, action),
-    galleryReducer(state.imgs, action)
+    galleryReducer(state.imgs, action),
+    uploadingReducer(state.uploading, action),
 );
 
 // User Reducer
@@ -35,3 +36,9 @@ final Reducer<List<ImageModel>> galleryReducer = combineReducers([
 ]);
 
 List<ImageModel> _updateImages(List<ImageModel> imgs, UpdateGallery action) => List.unmodifiable(List.from(action.imgs));
+
+// Uploading Reducer
+final Reducer<bool> uploadingReducer = combineReducers([
+  TypedReducer<bool, UploadingAction>(_uploadingUpdate)
+]);
+bool _uploadingUpdate(bool uploading, UploadingAction action) => action.uploading;

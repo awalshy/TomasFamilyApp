@@ -31,14 +31,15 @@ class GalleryService {
     return thumbs;
   }
 
-  Future<ImageModel> uploadImage(path) async {
+  Future<ImageModel> uploadImage(path, callback) async {
     Reference ref = FirebaseStorage.instance.ref(familyId);
     File file = File(path);
     String extension = p.extension(path);
     DateTime date = new DateTime.now();
     String fileName = '${date.year.toString()}${date.month.toString()}${date.day.toString()}${date.hour.toString()}${date.minute.toString()}${date.second.toString()}${extension}';
     try {
-      await ref.child(fileName).putFile(file);
+      final task = ref.child(fileName).putFile(file);
+      task.whenComplete(callback);
     } on FirebaseException catch(e) {
       print(e.message);
     }
