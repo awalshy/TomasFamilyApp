@@ -78,7 +78,7 @@ class _SignInState extends State<SignIn> {
         });
         dispatchSignIn(_user.get());
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext contect) => Layout()));
+            MaterialPageRoute(builder: (BuildContext context) => Layout()));
       }
     } on FirebaseAuthException catch (e) {
       var snack;

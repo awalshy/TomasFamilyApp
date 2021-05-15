@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     FirebaseAuth _auth = FirebaseAuth.instance;
     final widget = _auth.currentUser != null ? Layout() : SignIn();
 
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 

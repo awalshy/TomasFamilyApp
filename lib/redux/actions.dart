@@ -1,3 +1,4 @@
+import 'package:tomasfamilyapp/models/models/Conversation.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
 
 // User Actions
@@ -12,19 +13,29 @@ class LoadUser {
   LoadUser(this.id);
 }
 
-// Conversation Actions
-class RemoveConversationAction {
-  final String id;
+// Contacts Actions
+class LoadContacts {
+  LoadContacts();
+}
 
-  RemoveConversationAction(this.id);
+// Conversation Actions
+class LoadConversations {
+  final String uid;
+  LoadConversations(this.uid);
+}
+
+class RemoveConversationAction {
+  final ConversationModel conv;
+
+  RemoveConversationAction(this.conv);
 }
 class AddConversationAction {
-  final String id;
+  final ConversationModel conv;
 
-  AddConversationAction(this.id);
+  AddConversationAction(this.conv);
 }
 class UpdateConversationAction {
-  final List<String> ids;
+  final List<ConversationModel> convs;
 
-  UpdateConversationAction(this.ids);
+  UpdateConversationAction(this.convs);
 }

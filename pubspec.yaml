@@ -27,6 +27,9 @@ flutter_icons:
   adaptive_icon_background: '#FF133C6D'
   adaptive_icon_foregournd: 'assets/icons/icon_head_512.png'
 
+flutter_native_splash:
+  color: '#133c6d'
+
 dependencies:
   flutter:
     sdk: flutter
@@ -40,20 +43,21 @@ dependencies:
   firebase_analytics: ^7.1.1
   firebase_auth: ^1.0.1
   cloud_firestore: ^1.0.3
-  provider: ^4.3.2+2
   shared_preferences: ^2.0.5
   flutter_svg: ^0.19.3
   rive: ^0.6.8
   flutter_keyboard_visibility: ^5.0.0
-  flutter_launcher_icons: ^0.8.1
   flutter_redux: ^0.8.2
   skeleton_text: ^3.0.0
   redux_dev_tools: ^0.7.0
   flutter_redux_dev_tools: ^0.5.1
+  bubble: ^1.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.3.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
