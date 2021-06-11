@@ -68,11 +68,9 @@ class _SignInState extends State<SignIn> {
             .collection('users')
             .doc(user.user.uid)
             .get();
-        dynamic familyRef = fireUser.get('family');
-        DocumentSnapshot familySnap = await familyRef.get();
         UserService _user = new UserService();
         _user.login(fireUser.get('firstName'),
-            fireUser.get('lastName'), familySnap.get('name') as String, user.user.uid);
+            fireUser.get('lastName'), user.user.uid);
         setState(() {
           _loading = false;
         });

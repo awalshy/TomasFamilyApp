@@ -23,9 +23,9 @@ environment:
 flutter_icons:
   android: "launcher_icon"
   ios: false
-  image_path: 'assets/icons/icon_head_512.png'
-  adaptive_icon_background: '#FF133C6D'
-  adaptive_icon_foregournd: 'assets/icons/icon_head_512.png'
+  image_path: 'assets/icons/icon_head_512.png' #path to app icon
+  adaptive_icon_background: '#FF133C6D' #color code background color
+  adaptive_icon_foregournd: 'assets/icons/icon_head_512.png' #path to app icon no background
 
 flutter_native_splash:
   color: '#133c6d'
@@ -56,6 +56,7 @@ dependencies:
   floating_action_bubble: 1.0.9
   image_picker: ^0.7.5
   path: ^1.8.0
+  flutter_blue: ^0.7.3
 
 dev_dependencies:
   flutter_test:

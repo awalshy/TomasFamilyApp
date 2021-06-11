@@ -1,14 +1,11 @@
-import 'package:tomasfamilyapp/models/models/Conversation.dart';
-import 'package:tomasfamilyapp/models/models/Image.dart';
+import 'package:tomasfamilyapp/models/models/BlDev.dart';
 import 'package:tomasfamilyapp/models/models/User.dart';
 
 class AppState {
   final UserModel user;
-  final List<ConversationModel> convs;
-  final List<ImageModel> imgs;
-  final bool uploading;
+  final List<Bldev> devs;
 
-  AppState(this.user, this.convs, this.imgs, this.uploading);
+  AppState(this.user, this.devs);
 
-  factory AppState.initial() => AppState(null, List.unmodifiable([]), List.unmodifiable([]), false);
+  factory AppState.initial() => AppState(null, List.unmodifiable([]));
 }

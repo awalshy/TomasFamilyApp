@@ -14,7 +14,6 @@ class Unboarding extends StatefulWidget {
 
 class _UnboardingState extends State<Unboarding> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _familyController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _firstNameController = TextEditingController();
   FirebaseAuth _auth;
@@ -25,7 +24,6 @@ class _UnboardingState extends State<Unboarding> {
       final res = await _user.create(
           _firstNameController.text,
           _lastNameController.text,
-          _familyController.text,
           _auth.currentUser.uid);
       if (res != null) {
         ScaffoldMessenger.of(context)
@@ -114,31 +112,6 @@ class _UnboardingState extends State<Unboarding> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Veuillez entrer votre nom de famille';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: TextFormField(
-                          controller: _familyController,
-                          decoration: const InputDecoration(
-                              hintText: 'CODE FAMILLE',
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.white)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.white)),
-                              hintStyle: TextStyle(color: Colors.white)),
-                          style: TextStyle(color: Colors.white),
-                          inputFormatters: [UpperCaseTextFormatter()],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre code famille';
                             }
                             return null;
                           },

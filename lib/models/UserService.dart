@@ -18,18 +18,10 @@ class UserService {
   UserModel get() => _user;
 
   Future<UserModel> create(
-      String firstName, String lastName, String family, String uid
+      String firstName, String lastName, String uid
       ) async {
     this._user = UserModel(uid: uid, lastName: lastName, firstName: firstName);
     CollectionReference usersCollection = _firestore.collection('users');
-    QuerySnapshot fam = await _firestore
-        .collection('families')
-        .where('name', isEqualTo: family)
-        .limit(1)
-        .get();
-    QueryDocumentSnapshot famille = fam.docs.first;
-    List<dynamic> members = famille.get('members');
-
     // Create User In DB
     try {
       var user = usersCollection.doc(uid);
@@ -37,17 +29,8 @@ class UserService {
         'createdAt': Timestamp.now(),
         'firstName': _user.firstName,
         'lastName': _user.lastName,
-        'family': _user.family,
         'uid': uid
       });
-      if (members.contains(uid))
-        return null;
-      else {
-        members.add(user);
-        DocumentReference famDoc =
-        _firestore.collection('families').doc(famille.id);
-        await famDoc.update({'members': members});
-      }
     } catch (e) {
       return null;
     }
@@ -62,10 +45,7 @@ class UserService {
       final lastName = userDoc.get('lastName');
       final firstName = userDoc.get('firstName');
       final id = uid;
-      DocumentReference fam = userDoc.get('family');
-      DocumentSnapshot familyDoc = await fam.get();
-      final family = familyDoc.get('name');
-      base = new UserModel(uid: id, lastName: lastName, firstName: firstName, family: family);
+      base = new UserModel(uid: id, lastName: lastName, firstName: firstName);
       return base;
     } on FirebaseException catch(e) {
       print('Failed to load user' + e.message);
@@ -96,13 +76,12 @@ class UserService {
   }
 
   Future<bool> login(
-      String firstName, String lastName, String familyCode, String uid
+      String firstName, String lastName, String uid
       ) async {
     try {
       _user = UserModel(uid: uid,
           lastName: lastName,
-          firstName: firstName,
-          family: familyCode);
+          firstName: firstName);
       return true;
     } catch(e) {
       return false;
